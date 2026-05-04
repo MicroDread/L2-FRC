@@ -256,49 +256,6 @@ def round_up(amount, round_val):
     return int(math.ceil(amount / round_val)) * round_val
 
 
-def clean_filename(raw_filename):
-    """Check filename has not illegal characters and is not too long"""
-
-    # assume filename is OK
-    valid_filename = True
-    error = ""
-
-    while True:
-
-        # replace spaces with underscores
-        raw_filename = raw_filename.replace(" ", "_")
-
-        # check for valid length
-        if len(raw_filename) >= 20:
-            valid_filename = False
-            error = ("Oops - your product name / filename is too long.  \n"
-                     "Please provide an alternate filename (<= 19 characters) \n"
-                     "or press <enter> to default to FRC_yyyy_mm_ddd")
-
-        # iterate through filename and check for invalid characters
-        for letter in raw_filename:
-            if letter.isalnum() is False and letter != "_":
-                valid_filename = False
-                error = ("I can't use the product name / proposed filename \n"
-                         "as it has illegal characters.  Please \n"
-                         "enter an alternate name for the first part \n"
-                         "of the file or press <enter> to default to FRC_yyyy_mm_dd")
-                break
-
-        if valid_filename is False:
-            print(error)
-            raw_filename = input("\nPlease enter an alternate name for the start of the file: ")
-
-            # reset valid_filename so that it new name can be checked.
-            valid_filename = True
-
-            # put in default filename if users press <enter>
-            if raw_filename == "":
-                raw_filename = "FRC"
-
-        else:
-            return raw_filename
-
 
 # Main routine goes here
 
@@ -413,9 +370,9 @@ for item in to_write:
 
 # check product name is suitable for a filename
 # and ask for an alternate file name if necessary
-clean_product_name = clean_filename(product_name)
 
-file_name = f"{clean_product_name}_{year}_{month}_{day}"
+
+file_name = f"{input('Enter file name: ')}_{year}_{month}_{day}"
 write_to = "{}.txt".format(file_name)
 
 text_file = open(write_to, "w+")
